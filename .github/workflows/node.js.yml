@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x] # Try upgrading to 20.x if needed
+        node-version: [18.x]
 
     steps:
     - name: Checkout repository
@@ -37,18 +37,18 @@ jobs:
         echo "CLOUDINARY_CLIENT_SECRET=${{ secrets.CLOUDINARY_CLIENT_SECRET }}" >> .env
 
     - name: Install dependencies
-      run: npm ci
+      run: npm install  # Change from npm ci to npm install
 
     - name: Debug npm installation (optional)
       run: cat package.json && ls -la node_modules
 
     - name: Run build
       run: npm run build --if-present
-      continue-on-error: true # Prevents immediate failure for debugging
+      continue-on-error: true
 
     - name: Check for npm errors
       run: cat npm-debug.log || echo "No npm debug log found"
 
     - name: Run tests (optional)
       run: npm test
-      if: success() || failure() # Run even if build fails
+      if: success() || failure()
